@@ -1,6 +1,6 @@
 {
-  "TrytonBot/public/build/appJs.js": "/TrytonBot/public/build/appJs.js",
-  "TrytonBot/public/build/runtime.js": "/TrytonBot/public/build/runtime.js",
-  "TrytonBot/public/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js": "/TrytonBot/public/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js",
-  "TrytonBot/public/build/assets_styles_app_scss.css": "/TrytonBot/public/build/assets_styles_app_scss.css"
+  "build/appJs.js": "/build/appJs.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js",
+  "build/assets_styles_app_scss.css": "/build/assets_styles_app_scss.css"
 }

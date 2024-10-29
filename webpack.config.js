@@ -1,3 +1,5 @@
+// TrytonBot/webpack.config.js
+
 const Encore = require('@symfony/webpack-encore');
 
 if (!Encore.isRuntimeEnvironmentConfigured()) {
@@ -8,7 +10,7 @@ Encore
     .addStyleEntry('app', './assets/styles/app.scss')
     .addEntry('appJs', './assets/app.js')
     .setOutputPath('public/build/')
-    .setPublicPath('/TrytonBot/public/build')
+    .setPublicPath('/build')
     .enableStimulusBridge('./assets/controllers.json')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
