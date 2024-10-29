@@ -18,9 +18,6 @@ yarn-error.log
 # Dependencias de Node.js
 node_modules/
 
-# Archivos compilados por Webpack Encore
-public/build/
-
 # Archivos de Symfony que se regeneran
 var/cache/
 var/log/
