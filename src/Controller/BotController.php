@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Route("/bot", name="bot")
+ */
 
 // TrytonBot/src/Controller/BotController.php
 
