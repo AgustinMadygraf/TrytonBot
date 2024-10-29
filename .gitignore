@@ -9,3 +9,19 @@ docs/00-Prompt-for-ProjectAnalysis.md
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+# Dependencias de Node.js
+node_modules/
+
+# Archivos compilados por Webpack Encore
+public/build/
+
+# Archivos de Symfony que se regeneran
+var/cache/
+var/log/
