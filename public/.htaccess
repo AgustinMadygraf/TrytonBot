@@ -1,0 +1,15 @@
+# TrytonBot/public/.htaccess
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirige todas las solicitudes a la carpeta "public"
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /index.php [QSA,L]
+</IfModule>
+
+# Permitir acceso a los archivos en /build y otros archivos estáticos
+<FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
