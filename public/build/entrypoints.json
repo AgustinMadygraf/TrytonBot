@@ -2,20 +2,20 @@
   "entrypoints": {
     "appJs": {
       "js": [
-        "/TrytonBot/public/build/runtime.1de0fd7f.js",
-        "/TrytonBot/public/build/727.e7222a7c.js",
-        "/TrytonBot/public/build/appJs.729debd4.js"
+        "/TrytonBot/public/build/runtime.js",
+        "/TrytonBot/public/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js",
+        "/TrytonBot/public/build/appJs.js"
       ],
       "css": [
-        "/TrytonBot/public/build/264.e50fb261.css"
+        "/TrytonBot/public/build/assets_styles_app_scss.css"
       ]
     },
     "app": {
       "js": [
-        "/TrytonBot/public/build/runtime.1de0fd7f.js"
+        "/TrytonBot/public/build/runtime.js"
       ],
       "css": [
-        "/TrytonBot/public/build/264.e50fb261.css"
+        "/TrytonBot/public/build/assets_styles_app_scss.css"
       ]
     }
   }

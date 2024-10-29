@@ -8,7 +8,7 @@ Encore
     .addStyleEntry('app', './assets/styles/app.scss')
     .addEntry('appJs', './assets/app.js')
     .setOutputPath('public/build/')
-    .setPublicPath('/TrytonBot/public/build') // Ajuste de la ruta
+    .setPublicPath('/TrytonBot/public/build')
     .enableStimulusBridge('./assets/controllers.json')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
