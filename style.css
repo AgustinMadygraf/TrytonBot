@@ -1,20 +1,27 @@
-/* TrytonBot/style.css*/
+/* TrytonBot/style.css */
 body {
     font-family: Arial, sans-serif;
     padding: 10px;
     margin: 0;
+    height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    display: flex;
+    flex-direction: column;
 }
+
 .chat-container {
     display: flex;
     flex-direction: column;
     height: 100%;
+    flex: 1; /* Permite que el contenedor del chat ocupe el espacio disponible */
 }
+
 .messages {
     flex: 1;
     overflow-y: auto;
     border: 1px solid #ddd;
     padding: 10px;
 }
+
 .input-container {
     display: flex;
     margin-top: 10px;
