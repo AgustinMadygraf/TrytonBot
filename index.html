@@ -1,0 +1,23 @@
+<!-- TrytonBot/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Asistente Tryton - Un chatbot para ayudarte">
+    <title>Asistente Tryton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container" role="main">
+        <div class="messages" id="messages" aria-live="polite">
+            <!-- Aquí se mostrarán los mensajes -->
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Escribe tu mensaje..." aria-label="Escribe tu mensaje">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
