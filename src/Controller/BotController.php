@@ -24,16 +24,19 @@ class BotController extends AbstractController
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
         $botman = BotManFactory::create([]);
 
+        // Variable para almacenar la respuesta de BotMan
+        $responseMessages = [];
+
         // Escuchar mensajes específicos
-        $botman->hears('hello', function (BotMan $bot) {
-            file_put_contents("C:/AppServ/www/TrytonBot/var/log/dev.log", "Bot capturó el mensaje 'hello'\n", FILE_APPEND);
-            $bot->reply('Hola! ¿En qué puedo ayudarte?');
+        $botman->hears('hello|hola|hi', function (BotMan $bot) use (&$responseMessages) {
+            $responseMessages[] = 'Hola! ¿En qué puedo ayudarte?';
+            file_put_contents("C:/AppServ/www/TrytonBot/var/log/dev.log", "Bot capturó el mensaje 'hello' o similar\n", FILE_APPEND);
         });
 
         // Escuchar cualquier mensaje como respuesta predeterminada
-        $botman->fallback(function (BotMan $bot) {
+        $botman->fallback(function (BotMan $bot) use (&$responseMessages) {
+            $responseMessages[] = 'No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?';
             file_put_contents("C:/AppServ/www/TrytonBot/var/log/dev.log", "Bot capturó un mensaje pero no coincidió con 'hello'\n", FILE_APPEND);
-            $bot->reply('No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?');
         });
 
         if ($request->isMethod('POST')) {
@@ -49,8 +52,12 @@ class BotController extends AbstractController
             $request->request->replace($content);
 
             // Ejecutar BotMan para escuchar los mensajes
+            ob_start(); // Iniciar el buffer de salida
             $botman->listen();
-            return new JsonResponse(['status' => 200, 'messages' => ['BotMan está escuchando']]);
+            ob_clean(); // Limpiar cualquier salida generada por BotMan
+
+            // Retornar solo la respuesta generada por BotMan
+            return new JsonResponse(['status' => 200, 'messages' => $responseMessages]);
         }
 
         return $this->render('chat/index.html.twig', [
