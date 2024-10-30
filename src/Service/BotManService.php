@@ -36,7 +36,7 @@ class BotManService
 
         // Agregar middleware para recolectar respuestas
         $this->logger->debug("Añadiendo middleware para recolectar respuestas");
-        $botman->middleware->sending(new ReplyCollector($replies));
+        $botman->middleware->sending(new ReplyCollector($replies, $this->logger));
 
         // Registrar patrones de respuesta
         $this->logger->info("Registrando patrones de respuesta");
