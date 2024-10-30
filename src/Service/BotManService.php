@@ -24,13 +24,18 @@ class BotManService
     {
         $this->logger->info("Iniciando el manejo de la solicitud en BotManService");
 
-        // Cargar el driver y verificar
-        $this->logger->debug("Cargando driver de WebDriver");
+        // Cargar el driver de WebDriver
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
 
-        // Configuración e instancia de BotMan
-        $config = [];
-        $config['request'] = $request;
+        // Configuración explícita del mensaje de texto
+        $config = [
+            'web' => [
+                'matching' => [
+                    'text' => $request->get('text'), // Forzamos el texto en el campo esperado
+                ]
+            ]
+        ];
+
         $this->logger->debug("Creando instancia de BotMan con la configuración", ['config' => $config]);
         $botman = BotManFactory::create($config);
 
@@ -41,14 +46,13 @@ class BotManService
         $this->logger->debug("Añadiendo middleware para recolectar respuestas");
         $botman->middleware->sending(new ReplyCollector($replies));
 
-        // Registrar patrones de respuesta y loguear cada patrón
+        // Registrar patrones de respuesta
         $this->logger->info("Registrando patrones de respuesta");
         foreach ($this->responsePatterns as $pattern) {
-            $this->logger->debug("Registrando patrón", ['pattern' => $pattern]);
             $pattern->register($botman);
         }
 
-        // Procesar el mensaje y escuchar
+        // Escuchar el mensaje recibido
         $this->logger->info("Iniciando escucha de mensajes en BotMan");
         $botman->listen();
 
