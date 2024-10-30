@@ -15,3 +15,18 @@ services:
         class: Monolog\Processor\IntrospectionProcessor
         tags:
             - { name: monolog.processor }  # Aplica el procesador globalmente
+
+    App\Controller\ChatController:
+        autowire: true
+        autoconfigure: true
+        public: true  # Asegura que esté accesible públicamente como controlador
+
+    App\Service\BotManService:
+        autowire: true    # Permite que Symfony resuelva automáticamente las dependencias internas
+        autoconfigure: true # Registra automáticamente el servicio
+        public: true      # Asegura que esté disponible para otros servicios
+
+    App\Controller\BotController:
+        autowire: true
+        autoconfigure: true
+        public: true
