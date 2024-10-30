@@ -41,6 +41,8 @@ services:
 
     # Configuración de controladores con acceso público
     App\Controller\ChatController:
+        autowire: true
+        autoconfigure: true
         public: true
 
     App\Controller\BotController:
