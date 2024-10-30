@@ -25,13 +25,13 @@ class BotController extends AbstractController
         if ($request->isMethod('POST')) {
             $content = json_decode($request->getContent(), true);
 
-            // Asegurarse de que la clave es 'text'
+            // Ensure 'text' key exists
             if (isset($content['message'])) {
                 $content['text'] = $content['message'];
                 unset($content['message']);
             }
 
-            // Manejar la solicitud con el servicio de BotMan
+            // Handle request with BotMan service
             $responseMessages = $this->botManService->handleRequest($content);
 
             return new JsonResponse(['status' => 200, 'messages' => $responseMessages]);

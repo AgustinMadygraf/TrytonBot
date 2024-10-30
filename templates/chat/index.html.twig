@@ -34,8 +34,15 @@
             body: JSON.stringify({ text: message }) // Cambiado a 'text' en lugar de 'message'
         })
         .then(response => response.json())
-        .then(data => displayMessage('Bot', data.reply))
+        .then(data => {
+            if (data.messages && data.messages.length > 0) {
+                displayMessage('Bot', data.messages[0]); // Muestra el primer mensaje del array
+            } else {
+                displayMessage('Bot', 'No se recibió respuesta del servidor.');
+            }
+        })
         .catch(error => console.error('Error:', error));
     }
 </script>
+
 {% endblock %}
