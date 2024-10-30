@@ -10,6 +10,7 @@
         "botman/botman": "^2.8",
         "botman/driver-web": "^1.5",
         "doctrine/annotations": "^2.0",
+        "react/socket": "^1.16",
         "symfony/asset": "5.4.*",
         "symfony/console": "5.4.*",
         "symfony/dotenv": "5.4.*",

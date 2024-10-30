@@ -9,7 +9,7 @@ use BotMan\BotMan\Interfaces\CacheInterface;
 use BotMan\BotMan\Interfaces\StorageInterface;
 use BotMan\BotMan\Storages\Drivers\FileStorage;
 use React\EventLoop\LoopInterface;
-use React\Socket\Server;
+use React\Socket\SocketServer;
 use Symfony\Component\HttpFoundation\Request;
 
 class BotManFactory
@@ -87,7 +87,7 @@ class BotManFactory
     ) {
         $port = isset($config['port']) ? $config['port'] : 8080;
 
-        $socket = new Server('127.0.0.1:' . $port, $loop);
+        $socket = new SocketServer('127.0.0.1:' . $port, [], $loop);
 
         if (empty($cache)) {
             $cache = new ArrayCache();

@@ -1,4 +1,5 @@
 <?php
+// TrytonBot/src/Cotroller/BotController.php
 namespace App\Controller;
 
 use App\Service\BotManService;

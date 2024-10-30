@@ -1,39 +1,17 @@
 # config/services.yaml
-
 parameters:
-    # Define aquí parámetros adicionales si es necesario
+    # Parámetros adicionales si se necesitan
 
 services:
-    # Configuración predeterminada para los servicios en este archivo
-    _defaults:
-        autowire: true      # Inyecta dependencias automáticamente en tus servicios.
-        autoconfigure: true # Registra automáticamente tus servicios como comandos, suscriptores de eventos, etc.
-
-    # Hace que las clases en src/ estén disponibles como servicios
-    # Esto crea un servicio por clase cuyo id es el nombre de la clase completamente calificado
-    App\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-
-    # Definición explícita de servicios adicionales si es necesario
-    App\Service\BotManService:
+    # Definición del formateador personalizado para Monolog
+    monolog.formatter.line:
+        class: Monolog\Formatter\LineFormatter
         arguments:
-            $responsePatterns:
-                - '@App\Service\GreetingPattern'
-                - '@App\Service\FallbackPattern'
-            $logger: '@logger'  # Inyección del logger como dependencia
+            - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+            - true  # Incluir trazas de pila si es necesario
 
-    App\Service\GreetingPattern:
-        arguments:
-            $logger: '@logger'  # Inyección del logger en el servicio de patrón de saludo
-
-    App\Service\FallbackPattern:
-        arguments:
-            $logger: '@logger'  # Inyección del logger en el servicio de patrón de respuesta predeterminada
-
-    App\Service\ReplyCollector:
-        autowire: true
-        autoconfigure: true
+    # Definición del procesador IntrospectionProcessor de Monolog
+    monolog.processor.introspection:
+        class: Monolog\Processor\IntrospectionProcessor
+        tags:
+            - { name: monolog.processor }  # Aplica el procesador globalmente
