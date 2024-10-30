@@ -16,9 +16,18 @@ class GreetingPattern implements ResponsePatternInterface
 
     public function register(BotMan $botman): void
     {
-        $botman->hears('hello|hola|hi', function (BotMan $bot) {
-            $this->logger->info("Bot captured a greeting message");
-            $bot->reply('Hola! ¿En qué puedo ayudarte?');
+        $this->logger->info("Registrando el patrón de saludo en BotMan");
+
+        // Modificamos el patrón para que sea insensible a mayúsculas y minúsculas
+        $botman->hears('(?i)^(hello|hola|hi)$', function (BotMan $bot) {
+            $message = $bot->getMessage()->getText();
+            $this->logger->info("Patrón de saludo activado", ['message' => $message]);
+            
+            // Mensaje de respuesta
+            $reply = 'Hola! ¿En qué puedo ayudarte?';
+            $this->logger->debug("Enviando respuesta de saludo", ['reply' => $reply]);
+
+            $bot->reply($reply);
         });
     }
 }
