@@ -1,5 +1,6 @@
 <?php
 // TrytonBot/src/Service/BotManService.php
+
 namespace App\Service;
 
 use BotMan\BotMan\BotManFactory;
@@ -22,8 +23,12 @@ class BotManService
     {
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
 
+        $config = [];
+
+        // Create the driver with the request
         // Instantiate BotMan with the request
-        $botman = BotManFactory::create([], $request);
+        $config['request'] = $request;
+        $botman = BotManFactory::create($config);
 
         // Collect replies in an array
         $replies = [];

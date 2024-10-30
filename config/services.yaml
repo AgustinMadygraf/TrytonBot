@@ -33,7 +33,7 @@ services:
     App\Service\FallbackPattern:
         arguments:
             $logger: '@logger'  # Inyección del logger en el servicio de patrón de respuesta predeterminada
-            
+
     App\Service\ReplyCollector:
         autowire: true
         autoconfigure: true
