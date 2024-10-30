@@ -35,10 +35,10 @@ class BotController extends AbstractController
         // Manejo de la solicitud de entrada
         if ($request->isMethod('POST')) {
             $botman->listen();
-            return new Response(); // Respuesta vacía para evitar renderizado
+            return new Response('{}'); // Agrega una respuesta JSON vacía para evitar renderizado vacío
         }
 
-        // Renderiza la vista del bot
+        // Renderiza la vista del bot para solicitudes GET
         return $this->render('bot/index.html.twig', [
             'controller_name' => 'BotController',
         ]);
