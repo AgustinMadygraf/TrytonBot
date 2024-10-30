@@ -24,14 +24,19 @@ class BotController extends AbstractController
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
         $botman = BotManFactory::create([]);
 
+        // Escuchar mensajes específicos
         $botman->hears('hello', function (BotMan $bot) {
             file_put_contents("C:/AppServ/www/TrytonBot/var/log/dev.log", "Bot capturó el mensaje 'hello'\n", FILE_APPEND);
             $bot->reply('Hola! ¿En qué puedo ayudarte?');
         });
 
-        // Manejo de la solicitud de entrada
+        // Escuchar cualquier mensaje como respuesta predeterminada
+        $botman->fallback(function (BotMan $bot) {
+            file_put_contents("C:/AppServ/www/TrytonBot/var/log/dev.log", "Bot capturó un mensaje pero no coincidió con 'hello'\n", FILE_APPEND);
+            $bot->reply('No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?');
+        });
+
         if ($request->isMethod('POST')) {
-            // Capturar el contenido de la solicitud y convertir `message` a `text` si es necesario
             $content = json_decode($request->getContent(), true);
 
             if (isset($content['message'])) {
@@ -41,7 +46,6 @@ class BotController extends AbstractController
 
             file_put_contents("C:/AppServ/www/TrytonBot/var/log/dev.log", "Contenido recibido (ajustado): " . json_encode($content) . "\n", FILE_APPEND);
 
-            // Reemplazar el contenido ajustado en la solicitud
             $request->request->replace($content);
 
             // Ejecutar BotMan para escuchar los mensajes
