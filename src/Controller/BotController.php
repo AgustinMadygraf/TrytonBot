@@ -1,5 +1,5 @@
 <?php
-// TrytonBot/src/Cotroller/BotController.php
+// TrytonBot/src/Controller/BotController.php
 namespace App\Controller;
 
 use App\Service\BotManService;
@@ -32,18 +32,20 @@ class BotController extends AbstractController
             $this->logger->debug("Contenido recibido", ['content' => $content]);
 
             if (isset($content['text'])) {
-                // Cambiar 'message' por 'text'
-                $request->request->set('text', $content['text']);
-                $this->logger->info("Mensaje establecido en la solicitud", ['text' => $content['text']]);
+                // Establecer 'message' y 'driver' en la solicitud
+                $request->request->set('message', $content['text']);
+                $this->logger->info("Mensaje establecido en la solicitud", ['message' => $content['text']]);
 
-                // Establecer el driver
                 $request->request->set('driver', 'web');
                 $this->logger->info("Driver establecido en la solicitud", ['driver' => 'web']);
+
+                // Exponer los datos de la solicitud a las variables globales
+                $_REQUEST = array_merge($_REQUEST, $request->request->all());
             } else {
                 $this->logger->warning("La clave 'text' no existe en el contenido recibido");
             }
 
-            $responseMessages = $this->botManService->handleRequest($request);
+            $responseMessages = $this->botManService->handleRequest();
             $this->logger->info("Respuesta generada", ['responseMessages' => $responseMessages]);
 
             return new JsonResponse(['status' => 200, 'messages' => $responseMessages]);

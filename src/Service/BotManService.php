@@ -6,7 +6,6 @@ namespace App\Service;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class BotManService
 {
@@ -20,14 +19,14 @@ class BotManService
         $this->logger->info("BotManService inicializado con patrones de respuesta", ['patterns' => $responsePatterns]);
     }
 
-    public function handleRequest(Request $request): array
+    public function handleRequest(): array
     {
         $this->logger->info("Iniciando el manejo de la solicitud en BotManService");
 
         // Cargar el driver de WebDriver
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
 
-        // Crear instancia de BotMan sin configuración personalizada
+        // Crear instancia de BotMan sin pasar el objeto Request
         $this->logger->debug("Creando instancia de BotMan");
         $botman = BotManFactory::create([]);
 
