@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Psr\Log\LoggerInterface;
 
 class BotController extends AbstractController
 {
@@ -17,25 +18,26 @@ class BotController extends AbstractController
      */
     public function index(Request $request): JsonResponse
     {
-        // Configuración de BotMan
+        // Forzar la escritura de un log en una ubicación alternativa
+        file_put_contents("C:/Users/tu_usuario/Desktop/bot_log.txt", "Solicitud recibida en /bot\n", FILE_APPEND);
+
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
+        $botman = BotManFactory::create([]);
 
-        $config = [];
-        $botman = BotManFactory::create($config);
-
-        // Define la lógica de respuesta
         $botman->hears('hello', function (BotMan $bot) {
+            file_put_contents("C:/Users/tu_usuario/Desktop/bot_log.txt", "Bot capturó el mensaje 'hello'\n", FILE_APPEND);
             $bot->reply('Hola! ¿En qué puedo ayudarte?');
         });
 
-        // Manejo de la solicitud de entrada
         if ($request->isMethod('POST')) {
+            $content = $request->getContent();
+            file_put_contents("C:/Users/tu_usuario/Desktop/bot_log.txt", "Contenido recibido: $content\n", FILE_APPEND);
+
             $botman->listen();
             return new JsonResponse(['status' => 200, 'messages' => ['BotMan está escuchando']]);
         }
 
-        // Renderiza la vista del bot para solicitudes GET
-        return $this->render('bot/index.html.twig', [
+        return $this->render('chat/index.html.twig', [
             'controller_name' => 'BotController',
         ]);
     }
