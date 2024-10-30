@@ -6,8 +6,8 @@ use BotMan\BotMan\BotMan;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BotController extends AbstractController
@@ -15,7 +15,7 @@ class BotController extends AbstractController
     /**
      * @Route("/bot", name="bot")
      */
-    public function index(Request $request): Response
+    public function index(Request $request): JsonResponse
     {
         // Configuración de BotMan
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
@@ -28,14 +28,10 @@ class BotController extends AbstractController
             $bot->reply('Hola! ¿En qué puedo ayudarte?');
         });
 
-        $botman->hears('.*ayuda.*', function (BotMan $bot) {
-            $bot->reply('Claro, ¿sobre qué tema necesitas ayuda?');
-        });
-
         // Manejo de la solicitud de entrada
         if ($request->isMethod('POST')) {
             $botman->listen();
-            return new Response('{}'); // Agrega una respuesta JSON vacía para evitar renderizado vacío
+            return new JsonResponse(['status' => 200, 'messages' => ['BotMan está escuchando']]);
         }
 
         // Renderiza la vista del bot para solicitudes GET
