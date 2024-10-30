@@ -23,16 +23,8 @@ class BotController extends AbstractController
     public function index(Request $request): JsonResponse
     {
         if ($request->isMethod('POST')) {
-            $content = json_decode($request->getContent(), true);
-
-            // Ensure 'text' key exists
-            if (isset($content['message'])) {
-                $content['text'] = $content['message'];
-                unset($content['message']);
-            }
-
-            // Handle request with BotMan service
-            $responseMessages = $this->botManService->handleRequest($content);
+            // Pass the Request object directly
+            $responseMessages = $this->botManService->handleRequest($request);
 
             return new JsonResponse(['status' => 200, 'messages' => $responseMessages]);
         }

@@ -2,46 +2,43 @@
 // TrytonBot/src/Service/BotManService.php
 namespace App\Service;
 
-use BotMan\BotMan\BotMan;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class BotManService
 {
-    private $botman;
     private $logger;
+    private $responsePatterns;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(array $responsePatterns, LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        $this->responsePatterns = $responsePatterns;
+    }
+
+    public function handleRequest(Request $request): array
     {
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
-        $this->botman = BotManFactory::create([]);
-        $this->logger = $logger;
-        $this->initializeBotResponses();
-    }
 
-    private function initializeBotResponses()
-    {
-        // Respuesta para mensajes específicos
-        $this->botman->hears('hello|hola|hi', function (BotMan $bot) {
-            $bot->reply('Hola! ¿En qué puedo ayudarte?');
-            $this->logger->info("Respuesta de saludo activada");
-        });
+        // Instantiate BotMan with the request
+        $botman = BotManFactory::create([], $request);
 
-        // Respuesta de fallback para mensajes no reconocidos
-        $this->botman->fallback(function (BotMan $bot) {
-            $bot->reply('No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?');
-            $this->logger->info("Respuesta de fallback activada");
-        });
-    }
+        // Collect replies in an array
+        $replies = [];
 
-    public function handleRequest(array $data): array
-    {
-        $this->botman->hears($data['text'], function (BotMan $bot) use ($data) {
-            $bot->reply('Mensaje recibido: ' . $data['text']);
-        });
-        $this->botman->listen();
+        // Add middleware to collect replies
+        $botman->middleware->sending(new ReplyCollector($replies));
 
-        return ['BotMan está escuchando'];
+        // Register response patterns
+        foreach ($this->responsePatterns as $pattern) {
+            $pattern->register($botman);
+        }
+
+        // Process the message
+        $botman->listen();
+
+        return $replies;
     }
 }

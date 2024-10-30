@@ -17,7 +17,7 @@ class FallbackPattern implements ResponsePatternInterface
     public function register(BotMan $botman): void
     {
         $botman->fallback(function (BotMan $bot) {
-            $this->logger->info("Bot capturó un mensaje pero no coincidió con 'hello'");
+            $this->logger->info("Bot received a message but didn't match any pattern");
             $bot->reply('No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?');
         });
     }
