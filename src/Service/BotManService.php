@@ -11,7 +11,6 @@ class BotManService
 {
     private $botman;
     private $logger;
-    private $responseMessages = [];
 
     public function __construct(LoggerInterface $logger)
     {
@@ -23,28 +22,26 @@ class BotManService
 
     private function initializeBotResponses()
     {
-        // Define responses for specific messages
+        // Respuesta para mensajes específicos
         $this->botman->hears('hello|hola|hi', function (BotMan $bot) {
-            $this->logger->info("Bot capturó el mensaje 'hello' o similar");
-            $this->responseMessages[] = 'Hola! ¿En qué puedo ayudarte?';
+            $bot->reply('Hola! ¿En qué puedo ayudarte?');
+            $this->logger->info("Respuesta de saludo activada");
         });
 
-        // Fallback response for unrecognized messages
+        // Respuesta de fallback para mensajes no reconocidos
         $this->botman->fallback(function (BotMan $bot) {
-            $this->logger->info("Bot capturó un mensaje pero no coincidió con 'hello'");
-            $this->responseMessages[] = 'No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?';
+            $bot->reply('No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?');
+            $this->logger->info("Respuesta de fallback activada");
         });
     }
 
     public function handleRequest(array $data): array
     {
-        ob_start();
         $this->botman->hears($data['text'], function (BotMan $bot) use ($data) {
-            $this->responseMessages[] = 'Mensaje recibido: ' . $data['text'];
+            $bot->reply('Mensaje recibido: ' . $data['text']);
         });
         $this->botman->listen();
-        ob_clean(); // Limpia cualquier salida generada en el buffer
 
-        return $this->responseMessages;
+        return ['BotMan está escuchando'];
     }
 }
