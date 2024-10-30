@@ -1,4 +1,4 @@
 # TrytonBot/config/routes.yaml
-bot:
-    path: /bot
-    controller: App\Controller\BotController::index
+controllers:
+    resource: '../src/Controller/'
+    type: annotation

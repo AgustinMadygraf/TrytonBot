@@ -1,10 +1,5 @@
 <?php
-/**
- * @Route("/bot", name="bot")
- */
-
 // TrytonBot/src/Controller/BotController.php
-
 namespace App\Controller;
 
 use BotMan\BotMan\BotMan;
@@ -38,7 +33,10 @@ class BotController extends AbstractController
         });
 
         // Manejo de la solicitud de entrada
-        $botman->listen();
+        if ($request->isMethod('POST')) {
+            $botman->listen();
+            return new Response(); // Respuesta vacía para evitar renderizado
+        }
 
         // Renderiza la vista del bot
         return $this->render('bot/index.html.twig', [

@@ -1,15 +1,41 @@
 {# templates/chat/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Asistente Tryton{% endblock %}
+{% block title %}Chat con BotMan{% endblock %}
 
 {% block body %}
-    <div class="chat-container" role="main">
-        <div class="messages" id="messages" aria-live="polite">
-        </div>
-        <div class="input-container">
-            <input type="text" id="user-input" placeholder="Escribe tu mensaje..." aria-label="Escribe tu mensaje" class="form-control">
-            <button onclick="sendMessage()" class="btn btn-primary">Enviar</button>
-        </div>
+<div class="container">
+    <h1>Chat con BotMan</h1>
+    <div id="chat" style="border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;">
+        <!-- Mensajes aparecerán aquí -->
     </div>
+    <input type="text" id="user-input" placeholder="Escribe tu mensaje..." class="form-control mt-3">
+    <button id="send-btn" class="btn btn-primary mt-2">Enviar</button>
+</div>
+
+<script>
+    document.getElementById('send-btn').addEventListener('click', function () {
+        let userMessage = document.getElementById('user-input').value;
+        displayMessage('Usuario', userMessage);
+        sendMessageToBot(userMessage);
+        document.getElementById('user-input').value = '';
+    });
+
+    function displayMessage(sender, message) {
+        let chat = document.getElementById('chat');
+        chat.innerHTML += `<p><strong>${sender}:</strong> ${message}</p>`;
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function sendMessageToBot(message) {
+        fetch('/bot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => displayMessage('Bot', data.reply))
+        .catch(error => console.error('Error:', error));
+    }
+</script>
 {% endblock %}
