@@ -27,17 +27,9 @@ class BotManService
         // Cargar el driver de WebDriver
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
 
-        // Configuración explícita del mensaje de texto
-        $config = [
-            'web' => [
-                'matching' => [
-                    'text' => $request->get('text'), // Forzamos el texto en el campo esperado
-                ]
-            ]
-        ];
-
-        $this->logger->debug("Creando instancia de BotMan con la configuración", ['config' => $config]);
-        $botman = BotManFactory::create($config);
+        // Crear instancia de BotMan sin configuración personalizada
+        $this->logger->debug("Creando instancia de BotMan");
+        $botman = BotManFactory::create([]);
 
         // Arreglo para recolectar respuestas
         $replies = [];

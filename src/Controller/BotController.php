@@ -1,5 +1,4 @@
 <?php
-// TrytonBot/src/Controller/BotController.php
 namespace App\Controller;
 
 use App\Service\BotManService;
@@ -32,8 +31,13 @@ class BotController extends AbstractController
             $this->logger->debug("Contenido recibido", ['content' => $content]);
 
             if (isset($content['text'])) {
-                $request->request->set('message', $content['text']);
-                $this->logger->info("Mensaje establecido en la solicitud", ['message' => $content['text']]);
+                // Cambiar 'message' por 'text'
+                $request->request->set('text', $content['text']);
+                $this->logger->info("Mensaje establecido en la solicitud", ['text' => $content['text']]);
+
+                // Establecer el driver
+                $request->request->set('driver', 'web');
+                $this->logger->info("Driver establecido en la solicitud", ['driver' => 'web']);
             } else {
                 $this->logger->warning("La clave 'text' no existe en el contenido recibido");
             }

@@ -18,23 +18,16 @@ class GreetingPattern implements ResponsePatternInterface
     {
         $this->logger->info("Registrando el patrón de saludo en BotMan");
 
-        // Modificar el patrón para permitir coincidencias parciales
-        $botman->hears('hello|hola|hi', function (BotMan $bot) {
+        // Incluir delimitadores y modificador 'i' para coincidencia insensible a mayúsculas
+        $botman->hears('/hello|hola|hi/i', function (BotMan $bot) {
             $message = $bot->getMessage()->getText();
-            $this->logger->info("Mensaje recibido para coincidencia de saludo", ['message' => $message]);
+            $this->logger->info("Patrón de saludo activado", ['message' => $message]);
 
-            // Verificar si la coincidencia fue exitosa
-            if (preg_match('/hello|hola|hi/i', $message)) {
-                $this->logger->info("Patrón de saludo activado", ['message' => $message]);
+            // Mensaje de respuesta
+            $reply = '¡Hola! ¿En qué puedo ayudarte?';
+            $this->logger->debug("Enviando respuesta de saludo", ['reply' => $reply]);
 
-                // Mensaje de respuesta
-                $reply = 'Hola! ¿En qué puedo ayudarte?';
-                $this->logger->debug("Enviando respuesta de saludo", ['reply' => $reply]);
-
-                $bot->reply($reply);
-            } else {
-                $this->logger->warning("El mensaje no coincide con el patrón de saludo", ['message' => $message]);
-            }
+            $bot->reply($reply);
         });
     }
 }
