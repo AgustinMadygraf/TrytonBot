@@ -1,8 +1,51 @@
 # config/services.yaml
+
 parameters:
-    # Parámetros adicionales si se necesitan
+    # Define aquí parámetros adicionales si es necesario
 
 services:
+    # Configuración predeterminada para los servicios en este archivo
+    _defaults:
+        autowire: true       # Inyecta dependencias automáticamente en tus servicios.
+        autoconfigure: true  # Registra automáticamente tus servicios como comandos, suscriptores de eventos, etc.
+        public: false        # Por defecto, los servicios no serán públicos
+
+    # Hace que las clases en src/ estén disponibles como servicios
+    # Esto crea un servicio por clase cuyo id es el nombre de la clase completamente calificado
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Definición explícita de servicios adicionales si es necesario
+    App\Service\BotManService:
+        arguments:
+            $responsePatterns:
+                - '@App\Service\GreetingPattern'
+                - '@App\Service\FallbackPattern'
+            $logger: '@logger'  # Inyección del logger como dependencia
+
+    App\Service\GreetingPattern:
+        arguments:
+            $logger: '@logger'  # Inyección del logger en el servicio de patrón de saludo
+
+    App\Service\FallbackPattern:
+        arguments:
+            $logger: '@logger'  # Inyección del logger en el servicio de patrón de respuesta predeterminada
+
+    App\Service\ReplyCollector:
+        autowire: true
+        autoconfigure: true
+
+    # Configuración de controladores con acceso público
+    App\Controller\ChatController:
+        public: true
+
+    App\Controller\BotController:
+        public: true
+
     # Definición del formateador personalizado para Monolog
     monolog.formatter.line:
         class: Monolog\Formatter\LineFormatter
@@ -15,18 +58,3 @@ services:
         class: Monolog\Processor\IntrospectionProcessor
         tags:
             - { name: monolog.processor }  # Aplica el procesador globalmente
-
-    App\Controller\ChatController:
-        autowire: true
-        autoconfigure: true
-        public: true  # Asegura que esté accesible públicamente como controlador
-
-    App\Service\BotManService:
-        autowire: true    # Permite que Symfony resuelva automáticamente las dependencias internas
-        autoconfigure: true # Registra automáticamente el servicio
-        public: true      # Asegura que esté disponible para otros servicios
-
-    App\Controller\BotController:
-        autowire: true
-        autoconfigure: true
-        public: true
