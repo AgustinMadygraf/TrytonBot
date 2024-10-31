@@ -1,12 +1,14 @@
 // public/js/chat.js
 
-document.getElementById('send-btn').addEventListener('click', function () {
+document.getElementById('send-btn').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the form from submitting
     let userMessage = document.getElementById('user-input').value;
     console.log('Mensaje del usuario:', userMessage); // Debug
     displayMessage('Usuario', userMessage);
     handleUserMessage(userMessage);
     document.getElementById('user-input').value = '';
 });
+
 
 // Función que maneja la visualización del mensaje en el chat
 function displayMessage(sender, message) {
@@ -31,10 +33,11 @@ function handleUserMessage(message) {
 
 // Función que se encarga solo de la comunicación con el servidor
 function sendMessageToServer(message) {
+    console.log('Mensaje a enviar al servidor:', message); // Debug
     return fetch('/bot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: message }) // Cambiado a 'text' en lugar de 'message'
+        body: JSON.stringify({ text: message })
     })
     .then(response => {
         console.log('Estado de la respuesta:', response.status); // Debug del estado HTTP

@@ -18,23 +18,23 @@ class FallbackPattern implements ResponsePatternInterface
     {
         $botman->fallback(function (BotMan $bot) {
             $messageText = $bot->getMessage()->getText();
-
+    
             // Log que se activó el fallback con el mensaje recibido
             $this->logger->info("Fallback activado: no se encontró patrón para el mensaje recibido", [
                 'mensaje' => $messageText,
             ]);
-
-            // Log adicional si el mensaje debería haber coincidido con un patrón
-            if ($this->deberiaCoincidirConPatron($messageText)) {
+    
+            // Solo llamar a `deberiaCoincidirConPatron` si `$messageText` no es null
+            if ($messageText !== null && $this->deberiaCoincidirConPatron($messageText)) {
                 $this->logger->warning("El mensaje recibido debería haber coincidido con un patrón existente", [
                     'mensaje' => $messageText,
                 ]);
             }
-
+    
             // Respuesta al usuario
             $bot->reply('No estoy seguro de cómo responder a eso. ¿Puedes reformularlo?');
         });
-    }
+    }   
 
     /**
      * Analiza si un mensaje debería haber coincidido con algún patrón.
