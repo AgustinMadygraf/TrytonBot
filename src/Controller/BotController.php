@@ -1,5 +1,6 @@
 <?php
 // TrytonBot/src/Controller/BotController.php
+
 namespace App\Controller;
 
 use App\Service\BotManService;
@@ -19,44 +20,41 @@ class BotController extends AbstractController
         $this->botManService = $botManService;
         $this->logger = $logger;
     }
-
+    
     /**
-     * @Route("/bot", name="bot")
+     * @Route("/bot", name="bot", methods={"POST"})
      */
     public function index(Request $request): JsonResponse
     {
-        $this->logger->info("Solicitud recibida en /bot", ['method' => $request->getMethod()]);
+        $content = json_decode($request->getContent(), true);
     
-        if ($request->isMethod('POST')) {
-            $content = json_decode($request->getContent(), true);
-            $this->logger->debug("Contenido recibido", ['content' => $content]);
-    
-            if (isset($content['text']) && !empty(trim($content['text']))) {
-                // Establecer 'message' y 'driver' en la solicitud
-                $request->request->set('message', $content['text']);
-                $this->logger->info("Mensaje establecido en la solicitud", ['message' => $content['text']]);
-    
-                $request->request->set('driver', 'web');
-                $this->logger->info("Driver establecido en la solicitud", ['driver' => 'web']);
-    
-                // Exponer los datos de la solicitud a las variables globales
-                $_REQUEST = array_merge($_REQUEST, $request->request->all());
-    
-                $responseMessages = $this->botManService->handleRequest();
-                $this->logger->info("Respuesta generada", ['responseMessages' => $responseMessages]);
-    
-                return new JsonResponse(['status' => 200, 'messages' => $responseMessages]);
-            } else {
-                $this->logger->warning("Mensaje vacío o no válido recibido en 'text'");
-                return new JsonResponse(['status' => 400, 'message' => 'Mensaje no válido o vacío']);
-            }
+        if (!isset($content['text']) || empty(trim($content['text']))) {
+            return new JsonResponse(['status' => 400, 'message' => 'Mensaje no válido o vacío']);
         }
     
-        $this->logger->notice("La solicitud no es de tipo POST");
-    
-        return $this->render('chat/index.html.twig', [
-            'controller_name' => 'BotController',
-        ]);
+        $request->request->set('message', $content['text']);
+        $request->request->set('driver', 'web');
+        
+        $_REQUEST = array_merge($_REQUEST, $request->request->all());
+        
+        try {
+            $responseMessages = $this->botManService->handleRequest();
+            
+            // Formato JSON limpio y consistente
+            return new JsonResponse([
+                'status' => 200,
+                'messages' => array_map(function($msg) {
+                    return [
+                        'type' => 'text',
+                        'text' => $msg
+                    ];
+                }, $responseMessages)
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status' => 500,
+                'message' => 'Ocurrió un error al procesar la solicitud'
+            ]);
+        }
     }
-    
-}
+    }
