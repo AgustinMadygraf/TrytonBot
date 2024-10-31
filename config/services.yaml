@@ -1,15 +1,13 @@
+# TrytonBot/config/services.yaml
 parameters:
     # Define aquí parámetros adicionales si es necesario
 
 services:
-    # Configuración predeterminada para los servicios en este archivo
     _defaults:
-        autowire: true       # Inyecta dependencias automáticamente en tus servicios.
-        autoconfigure: true  # Registra automáticamente tus servicios como comandos, suscriptores de eventos, etc.
-        public: false        # Por defecto, los servicios no serán públicos
+        autowire: true
+        autoconfigure: true
+        public: false
 
-    # Hace que las clases en src/ estén disponibles como servicios
-    # Esto crea un servicio por clase cuyo id es el nombre de la clase completamente calificado
     App\:
         resource: '../src/'
         exclude:
@@ -17,27 +15,25 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # Definición explícita de servicios adicionales si es necesario
     App\Service\BotManService:
         arguments:
             $responsePatterns:
                 - '@App\Service\GreetingPattern'
                 - '@App\Service\FallbackPattern'
-            $logger: '@logger'  # Inyección del logger como dependencia
+            $logger: '@logger'
 
     App\Service\GreetingPattern:
         arguments:
-            $logger: '@logger'  # Inyección del logger en el servicio de patrón de saludo
+            $logger: '@logger'
 
     App\Service\FallbackPattern:
         arguments:
-            $logger: '@logger'  # Inyección del logger en el servicio de patrón de respuesta predeterminada
+            $logger: '@logger'
 
     App\Service\ReplyCollector:
         autowire: true
         autoconfigure: true
 
-    # Configuración de controladores con acceso público
     App\Controller\ChatController:
         autowire: true
         autoconfigure: true
@@ -46,19 +42,17 @@ services:
     App\Controller\BotController:
         public: true
 
-    # Definición del formateador personalizado para Monolog
     monolog.formatter.line:
         class: Monolog\Formatter\LineFormatter
         arguments:
-            - "[%%extra.index%%] %%channel%%.%%level_name%%: %%message%% %%context_json%% %%extra_json%%\n"
-            - true  # Incluir trazas de pila si es necesario
+            - "[%%extra.index%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+            - true
 
-    # Definición del Processor personalizado para el índice incremental
     App\Monolog\Processor\LogIndexProcessor:
         tags:
-            - { name: monolog.processor }  # Aplica el processor globalmente
+            - { name: monolog.processor }
 
-    # Definición del procesador IntrospectionProcessor de Monolog
+    # Keep only one definition of monolog.processor.introspection
     monolog.processor.introspection:
         class: Monolog\Processor\IntrospectionProcessor
         tags:
