@@ -52,8 +52,11 @@ services:
         tags:
             - { name: monolog.processor }
 
-    # Keep only one definition of monolog.processor.introspection
-    monolog.processor.introspection:
-        class: Monolog\Processor\IntrospectionProcessor
+    App\Monolog\Processor\CustomIntrospectionProcessor:
         tags:
-            - { name: monolog.processor }  # Aplica el procesador globalmente
+            - { name: monolog.processor }
+
+    monolog.processor.introspection:
+        class: App\Monolog\Processor\CustomIntrospectionProcessor
+        tags:
+            - { name: monolog.processor }
