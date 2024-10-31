@@ -1,6 +1,5 @@
 <?php
 // TrytonBot/src/Service/BotManService.php
-
 namespace App\Service;
 
 use BotMan\BotMan\BotManFactory;
@@ -16,15 +15,39 @@ class BotManService
     {
         $this->logger = $logger;
         $this->responsePatterns = $responsePatterns;
-        $this->logger->info("BotManService inicializado con patrones de respuesta", ['patterns' => $responsePatterns]);
+
+        // Verificar la inicialización y contenido de los patrones de respuesta
+        $this->logger->info("BotManService inicializado con patrones de respuesta.");
+        if (!empty($responsePatterns)) {
+            foreach ($responsePatterns as $index => $pattern) {
+                $this->logger->debug("Patrón de respuesta inyectado", [
+                    'index' => $index,
+                    'pattern_class' => get_class($pattern),
+                    'pattern_data' => $pattern
+                ]);
+            }
+        } else {
+            $this->logger->warning("No se han inyectado patrones de respuesta en BotManService");
+        }
     }
 
     public function handleRequest(): array
     {
         $this->logger->info("Iniciando el manejo de la solicitud en BotManService");
 
+        // Confirmar el contenido de la solicitud
+        $this->logger->debug("Contenido de la solicitud", ['request' => $_REQUEST]);
+
+        // Verificar el driver y el mensaje
+        $driver = $_REQUEST['driver'] ?? null;
+        $message = $_REQUEST['message'] ?? null;
+        $this->logger->info("Valores de driver y message", ['driver' => $driver, 'message' => $message]);
+
         // Cargar el driver de WebDriver
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
+
+        // Verificar los drivers activos
+        $this->logger->info("Drivers activos", ['drivers' => DriverManager::getAvailableDrivers()]);
 
         // Crear instancia de BotMan sin pasar el objeto Request
         $this->logger->debug("Creando instancia de BotMan");
@@ -47,6 +70,7 @@ class BotManService
         $this->logger->info("Iniciando escucha de mensajes en BotMan");
         $botman->listen();
 
+        // Logs después de botman->listen()
         $this->logger->info("Escucha finalizada. Respuestas recolectadas", ['replies' => $replies]);
 
         return $replies;

@@ -1,6 +1,5 @@
 <?php
 // TrytonBot/src/Service/GreetingPattern.php
-
 namespace App\Service;
 
 use BotMan\BotMan\BotMan;
@@ -17,13 +16,14 @@ class GreetingPattern implements ResponsePatternInterface
 
     public function register(BotMan $botman): void
     {
-        $this->logger->info("Registrando el patrón de saludo en BotMan");
+        $pattern = '/\b(hello|hola|hi)\b/i';
+        $this->logger->info("Registrando el patrón de escucha", ['pattern' => $pattern]);
 
-        // Usar una expresión regular insensible a mayúsculas
-        $botman->hears('/\b(hello|hola|hi)\b/i', function (BotMan $bot) {
+        $botman->hears($pattern, function (BotMan $bot) {
             $message = $bot->getMessage()->getText();
             $this->logger->info("Patrón de saludo activado", ['message' => $message]);
 
+            $this->logger->debug("Mensaje recibido antes de procesar", ['message' => $message]);
             $reply = '¡Hola! ¿En qué puedo ayudarte?';
             $this->logger->debug("Enviando respuesta de saludo", ['reply' => $reply]);
 

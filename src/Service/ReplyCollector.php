@@ -23,11 +23,31 @@ class ReplyCollector implements Sending
     {
         if ($payload instanceof OutgoingMessage) {
             $messageText = $payload->getText();
-            $this->replies[] = $messageText;
 
-            // Loggeamos el mensaje que se está recopilando
-            $this->logger->info("Recopilando respuesta en ReplyCollector", ['message' => $messageText]);
+            // Log para confirmar el contenido y tipo de respuesta
+            $this->logger->info("Recopilando respuesta", [
+                'contenido' => $messageText,
+                'tipo' => get_class($payload),
+            ]);
+
+            // Añadir respuesta al arreglo y verificar duplicados
+            if (!in_array($messageText, $this->replies, true)) {
+                $this->replies[] = $messageText;
+                $this->logger->info("Respuesta añadida al arreglo 'replies'", [
+                    'respuesta_agregada' => $messageText,
+                ]);
+            } else {
+                $this->logger->warning("Respuesta duplicada detectada en 'replies'", [
+                    'respuesta_duplicada' => $messageText,
+                ]);
+            }
+
+            // Log para verificación del estado de 'replies'
+            $this->logger->info("Estado actual del arreglo 'replies'", [
+                'contenido_arreglo' => $this->replies,
+            ]);
         }
+        
         return $next($payload);
     }
 }
