@@ -5,9 +5,10 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: ["!event"]
-            formatter: monolog.formatter.line  # Usamos el formateador predefinido en services.yaml
-            process_psr_3_messages: false
+            formatter: monolog.formatter.line
+            # processors:  # <-- Elimina o comenta esta sección
+            #     - App\Monolog\Processor\LogIndexProcessor
+            #     - monolog.processor.introspection
 
         console:
             type: console
