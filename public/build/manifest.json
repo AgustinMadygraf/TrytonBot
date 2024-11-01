@@ -1,6 +1,8 @@
 {
-  "build/appJs.js": "/build/appJs.js",
-  "build/runtime.js": "/build/runtime.js",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-ca39a2.js",
-  "build/assets_styles_app_scss.css": "/build/assets_styles_app_scss.css"
+  "build/appJs.js": "/build/appJs.e0fa3ca5.js",
+  "build/chat.js": "/build/chat.f870458a.js",
+  "build/runtime.js": "/build/runtime.1de0fd7f.js",
+  "build/970.2e7c017f.js": "/build/970.2e7c017f.js",
+  "build/621.fa9e7a72.js": "/build/621.fa9e7a72.js",
+  "build/264.e50fb261.css": "/build/264.e50fb261.css"
 }

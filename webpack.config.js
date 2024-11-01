@@ -9,8 +9,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
     .addStyleEntry('app', './assets/styles/app.scss')
     .addEntry('appJs', './assets/app.js')
+    .addEntry('chat', './assets/js/chat.js')
     .setOutputPath('public/build/')
     .setPublicPath('/build')
+    .setManifestKeyPrefix('build/')
     .enableStimulusBridge('./assets/controllers.json')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
