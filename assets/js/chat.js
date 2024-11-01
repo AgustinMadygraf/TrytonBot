@@ -16,7 +16,7 @@ function displayMessage(sender, message) {
 
 async function handleUserMessage(message) {
     try {
-        const response = await fetch('/bot', {
+        const response = await fetch('/TrytonBot/bot', {  
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: message })
