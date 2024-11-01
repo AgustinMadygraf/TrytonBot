@@ -1,4 +1,4 @@
-// public/js/chat.js
+// assets/js/chat.js
 
 document.getElementById('send-btn').addEventListener('click', function (event) {
     event.preventDefault();

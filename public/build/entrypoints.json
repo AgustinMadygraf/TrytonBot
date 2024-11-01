@@ -2,28 +2,28 @@
   "entrypoints": {
     "appJs": {
       "js": [
-        "/build/runtime.1de0fd7f.js",
-        "/build/970.2e7c017f.js",
-        "/build/621.fa9e7a72.js",
-        "/build/appJs.e0fa3ca5.js"
+        "/TrytonBot/public/build/runtime.1de0fd7f.js",
+        "/TrytonBot/public/build/970.2e7c017f.js",
+        "/TrytonBot/public/build/621.fa9e7a72.js",
+        "/TrytonBot/public/build/appJs.e0fa3ca5.js"
       ],
       "css": [
-        "/build/264.e50fb261.css"
+        "/TrytonBot/public/build/264.e50fb261.css"
       ]
     },
     "chat": {
       "js": [
-        "/build/runtime.1de0fd7f.js",
-        "/build/970.2e7c017f.js",
-        "/build/chat.f870458a.js"
+        "/TrytonBot/public/build/runtime.1de0fd7f.js",
+        "/TrytonBot/public/build/970.2e7c017f.js",
+        "/TrytonBot/public/build/chat.f870458a.js"
       ]
     },
     "app": {
       "js": [
-        "/build/runtime.1de0fd7f.js"
+        "/TrytonBot/public/build/runtime.1de0fd7f.js"
       ],
       "css": [
-        "/build/264.e50fb261.css"
+        "/TrytonBot/public/build/264.e50fb261.css"
       ]
     }
   }
