@@ -45,7 +45,7 @@ services:
     monolog.formatter.line:
         class: Monolog\Formatter\LineFormatter
         arguments:
-            - "[%%extra.index%%] | %%extra.channel_level%% | \"%%extra.file%%:%%extra.line%%\" | %%message%% | %%context%%\n"
+            - "[%%extra.index%%] | %%extra.channel_level%% | \"%%extra.file_line%%\" | %%message%% | %%context%%\n"
             - true
 
     App\Monolog\Processor\LogIndexProcessor:
