@@ -1,7 +1,7 @@
-
 # Script: run_servidor.ps1
-# Este script detiene cualquier instancia en ejecucion del servidor Symfony, limpia la cache y reinicia el servidor Symfony en segundo plano.
-# Tambien muestra los logs del servidor en tiempo real para monitorear la salida del servidor.
+# Este script detiene cualquier instancia en ejecucion del servidor Symfony, elimina .env.local.php si existe,
+# limpia la cache, asegura el modo de entorno 'dev' y reinicia el servidor Symfony en segundo plano.
+# Adicionalmente, muestra los logs del servidor en tiempo real para monitorear la salida.
 # Para ejecutar este script, simplemente ejecuta `.\run_servidor.ps1` en la terminal de PowerShell.
 
 # Limpia la pantalla
@@ -34,12 +34,22 @@ if ($serverStatus -notmatch "stopped") {
     Write-Output "El servidor se detuvo correctamente."
 }
 
+# Elimina el archivo .env.local.php si existe para asegurar que se usen las variables de .env
+if (Test-Path .env.local.php) {
+    Write-Output "Eliminando .env.local.php para forzar el uso de .env..."
+    Remove-Item .env.local.php
+}
+
+# Genera .env.local.php para el entorno de desarrollo
+Write-Output "Generando .env.local.php para el entorno de desarrollo..."
+composer dump-env dev
+
 # Limpia la cache del entorno de desarrollo
 Write-Output "Limpiando la cache..."
-php bin/console cache:clear
+php bin/console cache:clear --env=dev
 
-# Inicia el servidor Symfony en segundo plano
-Write-Output "Iniciando el servidor Symfony..."
+# Inicia el servidor Symfony en segundo plano en el entorno de desarrollo
+Write-Output "Iniciando el servidor Symfony en modo desarrollo..."
 symfony serve -d
 
 Write-Output " "
