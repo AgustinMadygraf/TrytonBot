@@ -3,14 +3,12 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 use App\Service\BotManService;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
-class BotController extends AbstractController
+class BotController
 {
     private $botManService;
     private $logger;
@@ -20,41 +18,26 @@ class BotController extends AbstractController
         $this->botManService = $botManService;
         $this->logger = $logger;
     }
-    
+
     /**
-     * @Route("/bot", name="bot", methods={"POST"})
+     * @Route("/bot", methods={"POST"})
      */
-    public function index(Request $request): JsonResponse
+    public function index()
     {
-        $content = json_decode($request->getContent(), true);
-    
-        if (!isset($content['text']) || empty(trim($content['text']))) {
-            return new JsonResponse(['status' => 400, 'message' => 'Mensaje no válido o vacío']);
-        }
-    
-        $request->request->set('message', $content['text']);
-        $request->request->set('driver', 'web');
-        
-        $_REQUEST = array_merge($_REQUEST, $request->request->all());
-        
         try {
-            $responseMessages = $this->botManService->handleRequest();
-            
-            // Formato JSON limpio y consistente
+            $replies = $this->botManService->handleRequest();
+
             return new JsonResponse([
                 'status' => 200,
-                'messages' => array_map(function($msg) {
-                    return [
-                        'type' => 'text',
-                        'text' => $msg
-                    ];
-                }, $responseMessages)
+                'messages' => $replies,
             ]);
         } catch (\Exception $e) {
+            $this->logger->error("Error en BotController: " . $e->getMessage());
+
             return new JsonResponse([
                 'status' => 500,
-                'message' => 'Ocurrió un error al procesar la solicitud'
+                'message' => 'Ocurrió un error al procesar la solicitud',
             ]);
         }
     }
-    }
+}

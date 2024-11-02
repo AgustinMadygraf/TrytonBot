@@ -16,11 +16,11 @@ function displayMessage(sender, message) {
 
 async function handleUserMessage(message) {
     try {
-        const response = await fetch('/TrytonBot/bot', {  
+        const response = await fetch('/bot', {  
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: message })
-        });
+        });               
         const data = await response.json();
         const responseMessage = data.messages ? data.messages[0] : 'No se recibió respuesta del servidor.';
         displayMessage('Bot', responseMessage);

@@ -1,5 +1,6 @@
 <?php
 // TrytonBot/src/Service/BotManService.php
+
 namespace App\Service;
 
 use BotMan\BotMan\BotManFactory;
@@ -52,6 +53,9 @@ class BotManService
         // Crear instancia de BotMan sin pasar el objeto Request
         $this->logger->debug("Creando instancia de BotMan");
         $botman = BotManFactory::create([]);
+
+        // **Deshabilitar el envío automático de respuestas**
+        $botman->setShouldSendResponse(false);
 
         // Arreglo para recolectar respuestas
         $replies = [];
