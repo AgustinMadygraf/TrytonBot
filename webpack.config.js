@@ -11,7 +11,7 @@ Encore
     .addEntry('appJs', './assets/app.js')
     .addEntry('chat', './assets/js/chat.js')
     .setOutputPath('public/build/')
-    .setPublicPath('/TrytonBot/public/build')  
+    .setPublicPath('/build')
     .setManifestKeyPrefix('build/')  
     .enableStimulusBridge('./assets/controllers.json')
     .splitEntryChunks()
