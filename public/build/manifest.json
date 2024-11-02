@@ -1,8 +1,9 @@
 {
-  "build/appJs.js": "/TrytonBot/public/build/appJs.e0fa3ca5.js",
-  "build/chat.js": "/TrytonBot/public/build/chat.f870458a.js",
-  "build/runtime.js": "/TrytonBot/public/build/runtime.1de0fd7f.js",
-  "build/970.2e7c017f.js": "/TrytonBot/public/build/970.2e7c017f.js",
-  "build/621.fa9e7a72.js": "/TrytonBot/public/build/621.fa9e7a72.js",
-  "build/264.e50fb261.css": "/TrytonBot/public/build/264.e50fb261.css"
+  "build/appJs.js": "/TrytonBot/public/build/appJs.js",
+  "build/chat.js": "/TrytonBot/public/build/chat.js",
+  "build/runtime.js": "/TrytonBot/public/build/runtime.js",
+  "build/vendors-node_modules_core-js_internals_a-constructor_js-node_modules_core-js_modules_es_error-8ac8d0.js": "/TrytonBot/public/build/vendors-node_modules_core-js_internals_a-constructor_js-node_modules_core-js_modules_es_error-8ac8d0.js",
+  "build/vendors-node_modules_core-js_modules_es_array_concat_js-node_modules_core-js_modules_es_array-b15708.js": "/TrytonBot/public/build/vendors-node_modules_core-js_modules_es_array_concat_js-node_modules_core-js_modules_es_array-b15708.js",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-85bcd9.js": "/TrytonBot/public/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_da-85bcd9.js",
+  "build/assets_styles_app_scss.css": "/TrytonBot/public/build/assets_styles_app_scss.css"
 }
